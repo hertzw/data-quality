@@ -1,8 +1,53 @@
+import pandas as pd
 import streamlit as st
 
-st.set_page_config(page_title="Validador de CSV", layout="wide")
+from src.schema import ContratoFuncionarios
 
-st.title("Validador de CSV")
+
+def validar(csv):
+    """
+    Validar o CSV
+    """
+
+    try:
+        df = pd.read_csv(csv)
+        erros = []
+
+        for idx, row in df.iterrows():
+            try:
+                ContratoFuncionarios(**row.to_dict())
+            except Exception as e:
+                erros.append(f"Error na linha:{idx+2} de {e}")
+
+        if erros:
+            st.error("Erros encontrasdos no arquivo")
+            for erro in erros:
+                st.error(erro)
+        else:
+            st.success("Arquivo válido")
+            return True
+
+    except Exception as e:
+        st.error(f"Error ao ler o arquivo: {e}")
+
+
+def main():
+    """
+    Função principal
+    """
+    st.set_page_config(page_title="Validador de CSV", layout="wide")
+    st.title("Validador de CSV")
+
+    csv = st.file_uploader("Escolha um arquivo CSV para validar", type=["csv"])
+
+    botao = st.button("Validar")
+
+    if botao:
+        validar(csv)
+
+
+if __name__ == "__main__":
+    main()
 
 # from src.database import Funcionarios, criar_sessao
 # from src.schema import ContratoFuncionarios
