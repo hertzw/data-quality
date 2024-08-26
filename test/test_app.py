@@ -21,7 +21,7 @@ def driver():
 
 
 def test_open_app(driver):
-    """Testa se o site está aberindo corretamente."""
+    """Testa se o site está abrindo corretamente."""
     driver.get("http://localhost:8501")
     sleep(2)
 
