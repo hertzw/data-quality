@@ -1,7 +1,6 @@
 from datetime import datetime
 import pandas as pd
 import streamlit as st
-
 from src.schema import ContratoFuncionarios
 from src.database import criar_sessao, Funcionarios
 
